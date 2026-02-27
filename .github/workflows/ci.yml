@@ -128,8 +128,8 @@ jobs:
       - name: Run smoke tests
         run: echo "curl -f https://staging-api.example.com/health"
 
-  # ─── DEPLOY PRODUCTION ───────────────────────────────────────────────────────
-   deploy-production:
+   # ─── DEPLOY PRODUCTION ───────────────────────────────────────────────────────
+  deploy-production:
     name: Deploy to Production
     needs: build
     runs-on: ubuntu-latest
@@ -172,4 +172,4 @@ jobs:
               repo: context.repo.repo,
               ref: `refs/tags/release-${new Date().toISOString().replace(/[:.]/g, '-')}`,
               sha: context.sha
-              })
+            })
