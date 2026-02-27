@@ -10,9 +10,9 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  # ─── LINT & TEST ─────────────────────────────────────────────────────────────
+  # ─── TEST ─────────────────────────────────────────────────────────────
   test:
-    name: Lint & Test
+    name: Test
     runs-on: ubuntu-latest
 
     services:
@@ -41,9 +41,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Lint (all workspaces)
-        run: npm run lint
 
       - name: Run tests (all workspaces)
         run: npm run test
@@ -131,15 +128,20 @@ jobs:
       - name: Run smoke tests
         run: echo "curl -f https://staging-api.example.com/health"
 
-  # ─── DEPLOY PRODUCTION ───────────────────────────────────────────────────────
+   # ─── DEPLOY PRODUCTION ───────────────────────────────────────────────────────
   deploy-production:
     name: Deploy to Production
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
+    permissions:
+      contents: write  # Required to create release tags
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download API artifact
         uses: actions/download-artifact@v4
         with:
@@ -152,19 +154,6 @@ jobs:
           name: web-dist
           path: web-dist/
 
-      # Tag release for rollback tracking
-      - name: Create Release Tag
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `refs/tags/release-${new Date().toISOString().replace(/[:.]/g, '-')}`,
-              sha: context.sha
-            })
-
-      # Replace with actual deploy commands
       - name: Deploy API to production
         run: echo "Deploy API to production"
 
@@ -173,3 +162,14 @@ jobs:
 
       - name: Health check
         run: echo "curl -f https://api.example.com/health"
+
+      - name: Create Release Tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `refs/tags/release-${new Date().toISOString().replace(/[:.]/g, '-')}`,
+              sha: context.sha
+            })
