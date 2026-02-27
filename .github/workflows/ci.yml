@@ -172,3 +172,4 @@ jobs:
               repo: context.repo.repo,
               ref: `refs/tags/release-${new Date().toISOString().replace(/[:.]/g, '-')}`,
               sha: context.sha
+              })
