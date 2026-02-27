@@ -4,7 +4,7 @@ dotenv.config();
 
 export const config = {
   app: {
-    port: parseInt(process.env.PORT || '3001', 10),
+    port: parseInt(process.env.PORT || '3306', 10),
     env: process.env.NODE_ENV || 'development',
     apiPrefix: '/api/v1',
   },
@@ -13,7 +13,7 @@ export const config = {
     port: parseInt(process.env.DB_PORT || '3306', 10),
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || 'password',
-    database: process.env.DB_NAME || 'card_system',
+    database: process.env.DB_NAME || 'railway',
   },
   cors: {
     origins: (process.env.CORS_ORIGINS || 'http://localhost:5173').split(','),
