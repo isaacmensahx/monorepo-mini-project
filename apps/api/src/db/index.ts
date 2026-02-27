@@ -17,6 +17,8 @@ export const getDb = async () => {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
+      // Required for Railway and most hosted MySQL providers
+      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
     });
 
     db = drizzle(pool, { schema, mode: 'default' });
