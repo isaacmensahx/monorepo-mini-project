@@ -9,11 +9,11 @@ export const config = {
     apiPrefix: '/api/v1',
   },
   db: {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '127.0.0.1',
     port: parseInt(process.env.DB_PORT || '3306', 10),
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'Clarityhitman47!',
-    database: process.env.DB_NAME || 'XSPLocal',
+    password: process.env.DB_PASSWORD || 'password',
+    database: process.env.DB_NAME || 'card_system',
   },
   cors: {
     origins: (process.env.CORS_ORIGINS || 'http://localhost:5173').split(','),
@@ -27,5 +27,10 @@ export const config = {
     maxLimit: 100,
   },
 };
+
+// Startup log — confirms env vars are loaded (remove after debugging)
+console.log('[Config] DB_HOST:', process.env.DB_HOST || 'NOT SET — using fallback 127.0.0.1');
+console.log('[Config] DB_PORT:', process.env.DB_PORT || 'NOT SET — using fallback 3306');
+console.log('[Config] DB_NAME:', process.env.DB_NAME || 'NOT SET — using fallback card_system');
 
 export type AppConfig = typeof config;
