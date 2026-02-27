@@ -1,16 +1,13 @@
+// apps/api/drizzle.config.ts
 import type { Config } from 'drizzle-kit';
-import * as dotenv from 'dotenv';
-dotenv.config();
 
 export default {
-schema: './src/db/schema.ts',
-out: './drizzle',
-dialect: 'mysql',
-dbCredentials: {
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT) || 3306,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'Clarityhitman47!',
-    database: process.env.DB_NAME || 'XSPLocal',
-},
+  schema: './src/db/schema.ts',          // ← make sure this path is correct!
+  out: './drizzle',
+  dialect: 'mysql',
+  driver: 'mysql2',                      // ← explicitly set this (fixes the --driver error)
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,      // ← prefer this single field
+  },
+  verbose: true,
 } satisfies Config;
